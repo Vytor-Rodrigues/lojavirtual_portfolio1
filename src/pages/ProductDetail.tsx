@@ -5,6 +5,8 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
+import { toast } from "@/components/ui/sonner";
+import { useShop } from "@/context/shop-store";
 import { products } from "@/data/products";
 
 const ProductDetail = () => {
@@ -12,6 +14,7 @@ const ProductDetail = () => {
   const product = products.find((p) => p.id === Number(id));
   const [qty, setQty] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
+  const { addToCart, isFavorite, toggleFavorite } = useShop();
 
   if (!product) {
     return (
@@ -30,6 +33,7 @@ const ProductDetail = () => {
 
   const related = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
   const images = [product.image, product.image, product.image];
+  const favorite = isFavorite(product.id);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -103,11 +107,25 @@ const ProductDetail = () => {
                   <span className="w-10 text-center text-sm font-medium">{qty}</span>
                   <button onClick={() => setQty(qty + 1)} className="p-3 hover:bg-secondary transition-colors"><Plus className="w-4 h-4" /></button>
                 </div>
-                <button className="flex-1 h-12 bg-accent text-accent-foreground font-semibold rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+                <button
+                  type="button"
+                  onClick={() => {
+                    addToCart(product.id, qty);
+                    toast.success("Produto adicionado ao carrinho");
+                  }}
+                  className="flex-1 h-12 bg-accent text-accent-foreground font-semibold rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+                >
                   <ShoppingBag className="w-5 h-5" /> Comprar Agora
                 </button>
-                <button className="h-12 w-12 border border-border rounded-lg flex items-center justify-center hover:bg-secondary hover:text-promo transition-colors">
-                  <Heart className="w-5 h-5" />
+                <button
+                  type="button"
+                  onClick={() => {
+                    const added = toggleFavorite(product.id);
+                    toast.success(added ? "Produto adicionado aos favoritos" : "Produto removido dos favoritos");
+                  }}
+                  className={`h-12 w-12 border border-border rounded-lg flex items-center justify-center hover:bg-secondary transition-colors ${favorite ? "text-promo" : "hover:text-promo"}`}
+                >
+                  <Heart className={`w-5 h-5 ${favorite ? "fill-current" : ""}`} />
                 </button>
               </div>
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Search, User, Heart, ShoppingBag, Menu, X, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useShop } from "@/context/shop-store";
 
 const navItems = [
   { label: "Perfumes", href: "/produtos?cat=Perfumes", sub: ["Masculino", "Feminino", "Unissex", "Kits"] },
@@ -16,6 +17,7 @@ const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
+  const { favoriteCount, cartCount } = useShop();
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
@@ -59,12 +61,21 @@ const Header = () => {
           <Link to="#" className="hidden sm:flex p-2 hover:bg-secondary rounded-full transition-colors">
             <User className="w-5 h-5" />
           </Link>
-          <Link to="#" className="hidden sm:flex p-2 hover:bg-secondary rounded-full transition-colors relative">
+          <Link to="/favoritos" className="flex p-2 hover:bg-secondary rounded-full transition-colors relative">
             <Heart className="w-5 h-5" />
+            {favoriteCount > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 min-w-4 h-4 px-1 bg-promo text-promo-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
+                {favoriteCount}
+              </span>
+            )}
           </Link>
-          <Link to="#" className="p-2 hover:bg-secondary rounded-full transition-colors relative">
+          <Link to="/carrinho" className="p-2 hover:bg-secondary rounded-full transition-colors relative">
             <ShoppingBag className="w-5 h-5" />
-            <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-accent text-accent-foreground text-[10px] font-bold rounded-full flex items-center justify-center">3</span>
+            {cartCount > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 min-w-4 h-4 px-1 bg-accent text-accent-foreground text-[10px] font-bold rounded-full flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
           </Link>
           <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden p-2 hover:bg-secondary rounded-full transition-colors">
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -145,7 +156,8 @@ const Header = () => {
               ))}
               <div className="border-t border-border mt-2 pt-2 px-6 flex gap-4">
                 <Link to="#" className="flex items-center gap-2 py-2 text-sm"><User className="w-4 h-4" /> Minha Conta</Link>
-                <Link to="#" className="flex items-center gap-2 py-2 text-sm"><Heart className="w-4 h-4" /> Favoritos</Link>
+                <Link to="/favoritos" className="flex items-center gap-2 py-2 text-sm"><Heart className="w-4 h-4" /> Favoritos</Link>
+                <Link to="/carrinho" className="flex items-center gap-2 py-2 text-sm"><ShoppingBag className="w-4 h-4" /> Carrinho</Link>
               </div>
             </div>
           </motion.div>
