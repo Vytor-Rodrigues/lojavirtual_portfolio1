@@ -1,9 +1,31 @@
 import { Heart, ShoppingBag, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import type { MouseEvent } from "react";
 import type { Product } from "@/data/products";
+import { toast } from "@/components/ui/sonner";
+import { useShop } from "@/context/shop-context";
 
 const ProductCard = ({ product, index = 0 }: { product: Product; index?: number }) => {
+  const { isFavorite, toggleFavorite, addToCart } = useShop();
+  const favorite = isFavorite(product.id);
+
+  const handleFavoriteClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const added = toggleFavorite(product.id);
+    toast.success(added ? "Produto adicionado aos favoritos" : "Produto removido dos favoritos");
+  };
+
+  const handleCartClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    addToCart(product.id);
+    toast.success("Produto adicionado ao carrinho");
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -31,11 +53,16 @@ const ProductCard = ({ product, index = 0 }: { product: Product; index?: number 
               NOVO
             </span>
           )}
-          <button className="absolute top-3 right-3 w-8 h-8 bg-background/80 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-background hover:text-promo">
-            <Heart className="w-4 h-4" />
+          <button
+            type="button"
+            onClick={handleFavoriteClick}
+            className={`absolute top-3 right-3 w-8 h-8 bg-background/80 backdrop-blur-sm rounded-full flex items-center justify-center transition-all hover:bg-background ${favorite ? "opacity-100 text-promo" : "opacity-0 group-hover:opacity-100 hover:text-promo"}`}
+            aria-label={favorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+          >
+            <Heart className={`w-4 h-4 ${favorite ? "fill-current" : ""}`} />
           </button>
           <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-            <button className="w-full py-2 bg-accent text-accent-foreground text-sm font-semibold rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+            <button type="button" onClick={handleCartClick} className="w-full py-2 bg-accent text-accent-foreground text-sm font-semibold rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
               <ShoppingBag className="w-4 h-4" /> Comprar
             </button>
           </div>
