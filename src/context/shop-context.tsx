@@ -1,17 +1,24 @@
 import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import { ShopContext, readStorage, type CartItem, type ShopContextValue } from "./shop-store";
+import {
+  CART_STORAGE_KEY,
+  FAVORITES_STORAGE_KEY,
+  ShopContext,
+  readStorage,
+  type CartItem,
+  type ShopContextValue,
+} from "./shop-store";
 
 export const ShopProvider = ({ children }: { children: ReactNode }) => {
   const [favoriteIds, setFavoriteIds] = useState<number[]>(() => readStorage("favorites", []));
   const [cartItems, setCartItems] = useState<CartItem[]>(() => readStorage("cart", []));
 
   useEffect(() => {
-    window.localStorage.setItem("shop:favorites", JSON.stringify(favoriteIds));
+    window.localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favoriteIds));
   }, [favoriteIds]);
 
   useEffect(() => {
-    window.localStorage.setItem("shop:cart", JSON.stringify(cartItems));
+    window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
   }, [cartItems]);
 
   const value = useMemo<ShopContextValue>(() => ({

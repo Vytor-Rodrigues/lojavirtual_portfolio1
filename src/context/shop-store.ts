@@ -18,8 +18,8 @@ export interface ShopContextValue {
   removeFromCart: (productId: number) => void;
 }
 
-const FAVORITES_STORAGE_KEY = "shop:favorites";
-const CART_STORAGE_KEY = "shop:cart";
+export const FAVORITES_STORAGE_KEY = "shop:favorites";
+export const CART_STORAGE_KEY = "shop:cart";
 
 export const ShopContext = createContext<ShopContextValue | undefined>(undefined);
 
