@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
+import { toast } from "@/components/ui/sonner";
 import { products } from "@/data/products";
 import { useShop } from "@/context/shop-store";
 
@@ -57,7 +58,12 @@ const Favorites = () => {
                 </div>
                 <button
                   type="button"
-                  onClick={() => favoriteProducts.forEach((product) => addToCart(product.id))}
+                  onClick={() => {
+                    favoriteProducts.forEach((product) => addToCart(product.id));
+                    toast.success(
+                      `${favoriteProducts.length} ${favoriteProducts.length === 1 ? "produto foi adicionado" : "produtos foram adicionados"} ao carrinho`,
+                    );
+                  }}
                   className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-accent px-6 text-sm font-semibold text-accent-foreground hover:opacity-90 transition-opacity"
                 >
                   <ShoppingBag className="w-4 h-4" />
