@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Search, User, Heart, ShoppingBag, Menu, X, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { useShop } from "@/context/shop-context";
+import { useShop } from "@/context/shop-store";
 
 const navItems = [
   { label: "Perfumes", href: "/produtos?cat=Perfumes", sub: ["Masculino", "Feminino", "Unissex", "Kits"] },

@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import { products } from "@/data/products";
-import { useShop } from "@/context/shop-context";
+import { useShop } from "@/context/shop-store";
 
 const Favorites = () => {
   const { favoriteIds, addToCart } = useShop();

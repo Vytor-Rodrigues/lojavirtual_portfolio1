@@ -6,7 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import { toast } from "@/components/ui/sonner";
-import { useShop } from "@/context/shop-context";
+import { useShop } from "@/context/shop-store";
 import { products } from "@/data/products";
 
 const ProductDetail = () => {

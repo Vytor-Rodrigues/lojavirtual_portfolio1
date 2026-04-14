@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import type { MouseEvent } from "react";
 import type { Product } from "@/data/products";
 import { toast } from "@/components/ui/sonner";
-import { useShop } from "@/context/shop-context";
+import { useShop } from "@/context/shop-store";
 
 const ProductCard = ({ product, index = 0 }: { product: Product; index?: number }) => {
   const { isFavorite, toggleFavorite, addToCart } = useShop();
